@@ -2,5 +2,6 @@
 {
 	public interface ISteamService
 	{
+		public void InstallArkSurvivalEvolved(string path);
 	}
 }

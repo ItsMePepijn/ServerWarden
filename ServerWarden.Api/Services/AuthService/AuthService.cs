@@ -98,7 +98,6 @@ namespace ServerWarden.Api.Services.AuthService
 			[
 				new Claim("id", user.Id.ToString()),
 				new Claim("name", user.Name),
-				new Claim("isSuperAdmin", user.IsSuperAdmin.ToString())
 			];
 
 			SymmetricSecurityKey key = new(System.Text.Encoding.UTF8.GetBytes(_keys.JwtKey));

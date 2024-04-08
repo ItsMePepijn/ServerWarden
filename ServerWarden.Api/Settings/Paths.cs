@@ -21,6 +21,14 @@
 			set => _dbPath = value;
 		}
 
+		// Server installations
+		private string? _serverInstallationsPath;
+		public string ServerInstallationsPath
+		{
+			get => _serverInstallationsPath ??= Path.Combine(BasePath, "servers");
+			set => _serverInstallationsPath = value;
+		}
+
 		// Non-configurable paths
 	}
 }
