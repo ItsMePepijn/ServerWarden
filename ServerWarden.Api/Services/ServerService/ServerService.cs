@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using ServerWarden.Api.Models;
 using ServerWarden.Api.Models.Database;
+using ServerWarden.Api.Models.Dto;
 using ServerWarden.Api.Services.SteamService;
 using ServerWarden.Api.Settings;
 
@@ -13,13 +14,18 @@ namespace ServerWarden.Api.Services.ServerService
 		private readonly ISteamService _steamService = steamService;
 		private readonly Paths _paths = paths.Value;
 
-		public async Task<ServiceResult<List<ServerProfile>>> GetUserServerProfiles(Guid userId)
+		public async Task<ServiceResult<List<ServerProfileDtoSimple>>> GetUserServerProfiles(Guid userId)
 		{
 			try
 			{
 				var servers = await _dataContext.Servers
 					.Include(x => x.UserPermissions)
 					.Where(x => x.UserPermissions.Any(y => y.UserId == userId))
+					.Select(x => new ServerProfileDtoSimple(
+							x.Id,
+							x.Name,
+							x.ServerType
+						))
 					.ToListAsync();
 
 				return new(ResultCode.Success, servers);
