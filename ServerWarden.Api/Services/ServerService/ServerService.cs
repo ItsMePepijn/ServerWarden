@@ -13,11 +13,14 @@ namespace ServerWarden.Api.Services.ServerService
 		private readonly ISteamService _steamService = steamService;
 		private readonly Paths _paths = paths.Value;
 
-		public async Task<ServiceResult<List<ServerProfile>>> GetServerProfiles()
+		public async Task<ServiceResult<List<ServerProfile>>> GetUserServerProfiles(Guid userId)
 		{
 			try
 			{
-				var servers = await _dataContext.Servers.Include(x => x.UserPermissions).ToListAsync();
+				var servers = await _dataContext.Servers
+					.Include(x => x.UserPermissions)
+					.Where(x => x.UserPermissions.Any(y => y.UserId == userId))
+					.ToListAsync();
 
 				return new(ResultCode.Success, servers);
 			}

@@ -20,7 +20,7 @@ namespace ServerWarden.Api.RouteHandlers
 			var claims = authService.ParseClaimsFromJwt(context.Request.Headers.Authorization!);
 			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
 
-			var result = await serverService.GetServerProfiles();
+			var result = await serverService.GetUserServerProfiles(userId);
             return result.ToResponse();
         }
 
