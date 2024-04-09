@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ServerService } from '../../services/server.service';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { ServerProfile } from '../../models/server';
+import { ServerProfileSimple } from '../../models/server';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +9,7 @@ import { ServerProfile } from '../../models/server';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  public serverList$: BehaviorSubject<ServerProfile[]> = new BehaviorSubject<ServerProfile[]>([]);
+  public serverList$: BehaviorSubject<ServerProfileSimple[]> = new BehaviorSubject<ServerProfileSimple[]>([]);
   constructor(
     public serverService: ServerService
   ) {}

@@ -8,9 +8,8 @@ export enum ServerPermissions
   SuperUser,
 }
 
-export interface ServerProfile{
+export interface ServerProfileSimple{
   id: string,
   name: string,
   serverType: ServerType,
-  installationPath: string,
 }
