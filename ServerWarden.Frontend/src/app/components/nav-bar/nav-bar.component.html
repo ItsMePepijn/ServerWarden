@@ -1,9 +1,11 @@
-<nav>
-  <div class="brand" [routerLink]="['/']">
-    <img src="assets/icon.png" alt="">
-    Server Warden
-  </div>
-  <div class="right" *ngIf="loggedIn">
-    <button class="red" (click)="authService.logout()">Logout</button>
-  </div>
-</nav>
+<div class="container">
+  <nav>
+    <div class="brand" [routerLink]="['/']">
+      <img src="assets/icon.png" alt="">
+      Server Warden
+    </div>
+    <div class="right" *ngIf="loggedIn">
+      <button class="red" (click)="authService.logout()">Logout</button>
+    </div>
+  </nav>
+</div>
