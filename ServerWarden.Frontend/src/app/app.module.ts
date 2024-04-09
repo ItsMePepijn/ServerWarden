@@ -13,6 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './views/auth/register/register.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServerService } from './services/server.service';
+import { ToString } from './pipes/parseId.pipe';
+import { ServerComponent } from './views/server/server.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AuthComponent,
     LoginComponent,
     RegisterComponent,
-    NavBarComponent
+    NavBarComponent,
+    ServerComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ToString,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('token') || '',
@@ -38,6 +43,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   providers: [
     AuthService,
+    ServerService,
     JwtHelperService,
     {
       provide: APP_INITIALIZER,

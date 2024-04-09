@@ -1,0 +1,57 @@
+@import '../../../vars';
+
+.container{
+  padding: 32px;
+  
+  & .server-list{
+    background-color: $color-background-secondary;
+    padding: 16px;
+    border-radius: 16px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+
+    @media screen and (min-width: 732px) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & .server{
+      background-color: $color-background-tertiary;
+      padding: 16px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease;
+
+      &:hover{
+        cursor: pointer;
+        background-color: rgba($color: $color-background-tertiary, $alpha: 0.7);
+      }
+
+      @media screen and (min-width: 732px) {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+      }
+
+      & img{
+        max-width: max-content;
+        width: 100%;
+        border-radius: 6px;
+
+        @media screen and (min-width: 732px) {
+          max-width: 70px;
+        }
+      }
+
+      & .title{
+        text-overflow: ellipsis;
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}

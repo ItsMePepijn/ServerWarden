@@ -6,12 +6,28 @@ import { LoginComponent } from './views/auth/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 import { LoginResolve } from './services/login.resolve';
 import { RegisterComponent } from './views/auth/register/register.component';
+import { ServerComponent } from './views/server/server.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     canActivate: [() => inject(AuthGuard).canActivate()],
+  },
+  {
+    path: 'server',
+    canActivate: [() => inject(AuthGuard).canActivate()],
+    children: [
+      {
+        path: '',
+        redirectTo: '/',
+        pathMatch: 'full'
+      },
+      {
+        path: ':id',
+        component: ServerComponent
+      },
+    ]
   },
   {
     path: '',
