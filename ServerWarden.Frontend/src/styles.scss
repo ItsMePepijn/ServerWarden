@@ -14,3 +14,48 @@ body{
   background-color: $color-background-primary;
   color: $color-text-primary;
 }
+
+a{
+  color: $color-text-accent-primary;
+}
+
+input[type="text"], input[type="password"]{
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  background-color: $color-background-tertiary;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+
+button{
+  all: unset;
+  box-sizing: border-box;
+
+  display: block;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: $color-button;
+
+  transition: background-color 0.3s ease;
+
+  &.red{
+    background-color: $color-button-red;
+  }
+
+  &:not(:disabled){
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  &:disabled{
+    background-color: $color-button-disabled;
+    color: $color-text-disabled;
+
+    &:hover{
+      cursor: not-allowed;
+    }
+  }
+}

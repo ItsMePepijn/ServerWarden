@@ -20,6 +20,7 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+        data: { animation: 'login' },
         resolve: {
           ready: () => inject(LoginResolve).resolve()
         }
@@ -27,6 +28,7 @@ const routes: Routes = [
       {
         path: 'register',
         component: RegisterComponent,
+        data: { animation: 'register' },
         resolve: {
           ready: () => inject(LoginResolve).resolve()
         }
