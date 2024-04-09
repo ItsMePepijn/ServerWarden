@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ServerService } from '../../services/server.service';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ServerProfile } from '../../models/server';
 
 @Component({
@@ -9,16 +9,18 @@ import { ServerProfile } from '../../models/server';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  public serverList$: Observable<ServerProfile[]> = new Observable<ServerProfile[]>();
+  public serverList$: BehaviorSubject<ServerProfile[]> = new BehaviorSubject<ServerProfile[]>([]);
   constructor(
     public serverService: ServerService
   ) {}
 
   ngOnInit() {
-    this.serverList$ = this.serverService.servers$.pipe(
-        map(servers => servers || [])
-      );
-
-    this.serverService.fetchServerList().subscribe();
+    this.serverService.getServerList()
+      .pipe(
+        map(response => response.data || [])
+      )
+      .subscribe(data => {
+        this.serverList$.next(data);
+      });
   }
 }
