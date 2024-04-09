@@ -1,0 +1,8 @@
+<h2>Login</h2>
+<form >
+  <input type="text" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}" autocomplete="username" placeholder="Username">
+  <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" autocomplete="current-password" placeholder="Password" (keyup.enter)="login()">
+  <button (click)="login()">Login</button>
+</form>
+<p class="error" *ngIf="error">{{error}}</p>
+<p>Don't have an account? <a routerLink="/register">Register instead</a></p>

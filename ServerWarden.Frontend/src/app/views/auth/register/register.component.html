@@ -1,0 +1,9 @@
+<h2>Register</h2>
+<form>
+  <input type="text" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}" autocomplete="username" placeholder="Username">
+  <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" autocomplete="new-password" placeholder="Password">
+  <input type="password" [(ngModel)]="passwordRepeat" [ngModelOptions]="{standalone: true}" autocomplete="new-password" placeholder="Repeat Password" (keyup.enter)="register()">
+  <button (click)="register()">Register</button>
+</form>
+<p class="error" *ngIf="error">{{error}}</p>
+<p>Already have an account? <a routerLink="/login">Login instead</a></p>

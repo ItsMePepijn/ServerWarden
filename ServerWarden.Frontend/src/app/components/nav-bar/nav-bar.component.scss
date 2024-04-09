@@ -1,0 +1,31 @@
+@import '../../../vars';
+
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-background-tertiary;
+  padding: 16px;
+
+  & .brand{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-text-primary;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    
+    &:hover{
+      cursor: pointer;
+    }
+    
+    & img{
+      max-width: 70px;
+      border-radius: 16px;
+    }
+  }
+}
+
+button{
+  background-color: $color-text-accent-primary;
+}
