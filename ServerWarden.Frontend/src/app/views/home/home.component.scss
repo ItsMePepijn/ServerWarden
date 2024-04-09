@@ -13,7 +13,7 @@
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 16px;
 
-    @media screen and (min-width: 732px) {
+    @media screen and (min-width: $breakpoint-sm) {
       display: flex;
       flex-direction: column;
     }
@@ -32,7 +32,7 @@
         background-color: rgba($color: $color-background-tertiary, $alpha: 0.7);
       }
 
-      @media screen and (min-width: 732px) {
+      @media screen and (min-width: $breakpoint-sm) {
         flex-direction: row;
         align-items: center;
         gap: 16px;
@@ -43,7 +43,7 @@
         width: 100%;
         border-radius: 6px;
 
-        @media screen and (min-width: 732px) {
+        @media screen and (min-width: $breakpoint-sm) {
           max-width: 70px;
         }
       }

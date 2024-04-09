@@ -1,1 +1,22 @@
-<p>server works!</p>
+<div class="container">
+  <div class="header">
+    <button routerLink="/">Back</button>
+    <p class="title">{{(server$ | async)?.name}}</p>
+  </div>
+
+  <div class="details">
+    <div class="server-info">
+      <div class="title">Overview</div>
+    </div>
+
+    <div class="user-info">
+      <div class="title">Users</div>
+      <div class="users">
+        <div class="user" *ngFor="let user of (server$ | async)?.users">
+          <i class="ph ph-user"></i>
+          <p>{{user.user.name}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

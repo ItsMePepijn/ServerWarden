@@ -11,6 +11,7 @@ namespace ServerWarden.Api.RouteHandlers
         {
             builder.MapGet("/", GetServerProfiles);
             builder.MapPost("/", CreateServer);
+            builder.MapGet("/{serverId}", GetServerProfileById);
 
             return builder;
         }
@@ -30,6 +31,15 @@ namespace ServerWarden.Api.RouteHandlers
 			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
 
 			var result = await serverService.CreateServer(userId, type, serverName);
+			return result.ToResponse();
+		}
+
+        private static async Task<IResult> GetServerProfileById(Guid serverId, HttpContext context, IAuthService authService, IServerService serverService)
+        {
+			var claims = authService.ParseClaimsFromJwt(context.Request.Headers.Authorization!);
+			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
+
+			var result = await serverService.GetServerProfileById(serverId, userId);
 			return result.ToResponse();
 		}
     }

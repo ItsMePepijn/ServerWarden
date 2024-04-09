@@ -26,5 +26,8 @@
 		InvalidPassword,
 		UserExists,
 		UserNotFound,
+		UserNotAuthorized,
+
+		ServerNotFound,
 	}
 }

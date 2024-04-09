@@ -16,4 +16,7 @@ export enum ResultCode
   InvalidPassword,
   UserExists,
   UserNotFound,
+  UserNotAuthorized,
+
+  ServerNotFound,
 }

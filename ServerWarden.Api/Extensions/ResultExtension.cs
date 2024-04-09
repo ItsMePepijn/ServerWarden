@@ -21,7 +21,9 @@ namespace ServerWarden.Api.Extensions
                 or ResultCode.InvalidPassword
                 or ResultCode.UserExists
                 or ResultCode.UserNotFound
-                    => TypedResults.BadRequest(result),
+				or ResultCode.ServerNotFound
+                or ResultCode.UserNotAuthorized 
+				    => TypedResults.BadRequest(result),
                 _ => new InternalServerErrorObjectResult<ServiceResult<T>>(result)
             };
 
@@ -42,7 +44,9 @@ namespace ServerWarden.Api.Extensions
                 or ResultCode.InvalidPassword
                 or ResultCode.UserExists
                 or ResultCode.UserNotFound
-                    => TypedResults.BadRequest(result),
+				or ResultCode.ServerNotFound
+				or ResultCode.UserNotAuthorized
+					=> TypedResults.BadRequest(result),
                 _ => new InternalServerErrorObjectResult<ServiceResult>(result)
             };
 

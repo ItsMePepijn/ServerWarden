@@ -13,6 +13,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [() => inject(AuthGuard).canActivate()],
+    data: { animation: 'home' }
   },
   {
     path: 'server',
@@ -25,7 +26,8 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: ServerComponent
+        component: ServerComponent,
+        data: { animation: 'server-details' }
       },
     ]
   },

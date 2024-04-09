@@ -19,4 +19,13 @@ export class ServerService {
       })
     );
   }
+
+  public getServerById(id: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`/api/servers/${id}`).pipe(
+      catchError((e) => {
+        console.error(e.error || e);
+        return of(e.error || e);
+      })
+    );
+  }
 }

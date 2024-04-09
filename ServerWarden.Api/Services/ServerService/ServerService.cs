@@ -36,6 +36,40 @@ namespace ServerWarden.Api.Services.ServerService
 			}
 		}
 
+		public async Task<ServiceResult<ServerProfileDto>> GetServerProfileById(Guid serverId, Guid userId)
+		{
+			try
+			{
+				var server = await _dataContext.Servers
+					.Include(x => x.UserPermissions)
+					.ThenInclude(x => x.User)
+					.FirstOrDefaultAsync(x => x.Id == serverId);
+
+				if (server == null)
+					return new(ResultCode.ServerNotFound);
+				if (!server.UserPermissions.Any(x => x.UserId == userId))
+					return new(ResultCode.UserNotAuthorized);
+
+				var serverDto = new ServerProfileDto(
+						server.Id,
+						server.Name,
+						server.ServerType,
+						server.InstallationPath,
+						server.UserPermissions
+							.Select(x => new ServerUserDto(
+									new UserDto(x.User.Id, x.User.Name),
+									x.Permissions
+								))
+							.ToList()
+					);
+				return new(ResultCode.Success, serverDto);
+			}
+			catch (Exception)
+			{
+				return new(ResultCode.Failure);
+			}
+		}
+
 		public async Task<ServiceResult<ServerProfile>> CreateServer(Guid userId, ServerType serverType, string initialName)
 		{
 			var user = _dataContext.Users.FirstOrDefault(u => u.Id == userId);
