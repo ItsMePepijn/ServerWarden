@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServerWarden.Api.Models;
 using ServerWarden.Api.Models.Database;
@@ -55,6 +55,7 @@ namespace ServerWarden.Api.Services.ServerService
 						server.Name,
 						server.ServerType,
 						server.InstallationPath,
+						server.HasBeenInstalled,
 						server.UserPermissions
 							.Where(x => x.User is not null)
 							.Select(x => new ServerUserDto(
