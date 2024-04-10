@@ -1,5 +1,6 @@
 ﻿using ServerWarden.Api.Extensions;
 using ServerWarden.Api.Models;
+using ServerWarden.Api.Models.Dto;
 using ServerWarden.Api.Services.AuthService;
 using ServerWarden.Api.Services.ServerService;
 
@@ -29,6 +30,11 @@ namespace ServerWarden.Api.RouteHandlers
         {
 			var claims = authService.ParseClaimsFromJwt(context.Request.Headers.Authorization!);
 			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
+
+			if (!Enum.IsDefined(typeof(ServerType), type))
+			{
+				return new ServiceResult<ServerProfileDtoSimple>(ResultCode.InvalidServerType).ToResponse();
+			}
 
 			var result = await serverService.CreateServer(userId, type, serverName);
 			return result.ToResponse();

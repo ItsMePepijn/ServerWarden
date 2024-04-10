@@ -5,6 +5,6 @@
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
-        public List<ServerPermission> Permissions { get; set; } = new List<ServerPermission>();
+		public List<ServerPermission> Permissions { get; set; } = [];
 	}
 }

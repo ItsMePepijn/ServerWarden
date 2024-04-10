@@ -29,5 +29,6 @@
 		UserNotAuthorized,
 
 		ServerNotFound,
+		InvalidServerType,
 	}
 }

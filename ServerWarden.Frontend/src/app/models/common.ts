@@ -19,4 +19,5 @@ export enum ResultCode
   UserNotAuthorized,
 
   ServerNotFound,
+  InvalidServerType,
 }

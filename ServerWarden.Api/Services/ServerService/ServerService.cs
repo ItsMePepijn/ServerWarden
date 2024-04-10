@@ -56,8 +56,9 @@ namespace ServerWarden.Api.Services.ServerService
 						server.ServerType,
 						server.InstallationPath,
 						server.UserPermissions
+							.Where(x => x.User is not null)
 							.Select(x => new ServerUserDto(
-									new UserDto(x.User.Id, x.User.Name),
+									new UserDto(x.User!.Id, x.User.Name),
 									x.Permissions
 								))
 							.ToList()
