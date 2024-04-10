@@ -7,7 +7,7 @@ namespace ServerWarden.Api.Services.ServerService
     public interface IServerService
 	{
 		public Task<ServiceResult<List<ServerProfileDtoSimple>>> GetUserServerProfiles(Guid userId);
-		public Task<ServiceResult<ServerProfile>> CreateServer(Guid userId, ServerType serverType, string initialName);
+		public Task<ServiceResult<ServerProfileDtoSimple>> CreateServer(Guid userId, ServerType serverType, string initialName);
 		public Task<ServiceResult<ServerProfileDto>> GetServerProfileById(Guid serverId, Guid userId);
 	}
 }

@@ -70,7 +70,7 @@ namespace ServerWarden.Api.Services.ServerService
 			}
 		}
 
-		public async Task<ServiceResult<ServerProfile>> CreateServer(Guid userId, ServerType serverType, string initialName)
+		public async Task<ServiceResult<ServerProfileDtoSimple>> CreateServer(Guid userId, ServerType serverType, string initialName)
 		{
 			var user = _dataContext.Users.FirstOrDefault(u => u.Id == userId);
 			if (user == null)
@@ -101,7 +101,7 @@ namespace ServerWarden.Api.Services.ServerService
 
 				Directory.CreateDirectory(installPath);
 
-				return new(ResultCode.Success, server);
+				return new(ResultCode.Success, new ServerProfileDtoSimple(server.Id, server.Name, server.ServerType));
 			}
 			catch (Exception)
 			{
