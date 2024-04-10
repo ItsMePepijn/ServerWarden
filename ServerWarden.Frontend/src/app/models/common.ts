@@ -21,3 +21,12 @@ export enum ResultCode
   ServerNotFound,
   InvalidServerType,
 }
+
+export enum ModalType{
+  NewServer
+}
+
+export interface DropdownOption{
+  id: number,
+  name: string,
+}

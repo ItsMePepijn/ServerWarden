@@ -16,6 +16,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServerService } from './services/server.service';
 import { ToString } from './pipes/parseId.pipe';
 import { ServerComponent } from './views/server/server.component';
+import { ModalService } from './services/modal.service';
+import { NewServerModalComponent } from './components/new-server-modal/new-server-modal.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { ServerComponent } from './views/server/server.component';
     LoginComponent,
     RegisterComponent,
     NavBarComponent,
-    ServerComponent
+    ServerComponent,
+    NewServerModalComponent,
+    DropdownComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,7 @@ import { ServerComponent } from './views/server/server.component';
   providers: [
     AuthService,
     ServerService,
+    ModalService,
     JwtHelperService,
     {
       provide: APP_INITIALIZER,

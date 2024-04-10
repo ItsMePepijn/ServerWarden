@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ServerService } from '../../services/server.service';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { ServerProfileSimple } from '../../models/server';
+import { ModalService } from '../../services/modal.service';
+import { ModalType } from '../../models/common';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +12,10 @@ import { ServerProfileSimple } from '../../models/server';
 })
 export class HomeComponent {
   public serverList$: BehaviorSubject<ServerProfileSimple[]> = new BehaviorSubject<ServerProfileSimple[]>([]);
+
   constructor(
-    public serverService: ServerService
+    private serverService: ServerService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -22,5 +26,9 @@ export class HomeComponent {
       .subscribe(data => {
         this.serverList$.next(data);
       });
+  }
+
+  public newServer() {
+    this.modalService.openModal(ModalType.NewServer);
   }
 }

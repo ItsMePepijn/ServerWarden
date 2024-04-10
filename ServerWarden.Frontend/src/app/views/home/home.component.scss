@@ -18,6 +18,13 @@
       flex-direction: column;
     }
 
+    & .new-server{
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+    }
+
     & .server{
       background-color: $color-background-tertiary;
       padding: 16px;

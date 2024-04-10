@@ -7,10 +7,11 @@ $color-background-tertiary: #1a2028;
 $color-text-primary: #ffffff;
 $color-text-accent-primary: #007bff;
 $color-text-accent-secondary: #f8b842;
+$color-text-accent-error: #bf4646;
 $color-text-disabled: #565860;
 
 $color-button: $color-text-accent-primary;
-$color-button-red: #bf4646;
+$color-button-red: $color-text-accent-error;
 $color-button-disabled: $color-background-primary;
 
 // Breakpoints

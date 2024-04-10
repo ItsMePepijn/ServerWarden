@@ -1,0 +1,25 @@
+<div class="dropdown" [ngClass]="{'opened' : opened || selectedOption}">
+  <div class="dropdown-header">
+    <button (click)="toggleDropdown()">
+      <img *ngIf="imagePath && selectedOption" [src]="imagePath + selectedOption.name + '.png'" [alt]="selectedOption.name">
+      <span>{{selectedOption?.name || 'Select an option'}}</span>
+      <i class="ph ph-caret-down" [ngClass]="{'opened' : opened}"></i>
+    </button>
+  </div>
+  <div class="dropdown-content" *ngIf="opened">
+    <div class="option" *ngFor="let option of options" (click)="selectOption(option.id)">
+      <img *ngIf="imagePath" [src]="imagePath + option.name + '.png'" [alt]="option.name">
+      <span>{{option.name}}</span>
+    </div>
+  </div>
+</div>
+
+<div class="dropdown-spacer">
+  <div class="dropdown-header">
+    <button>
+      <img *ngIf="imagePath" [src]="imagePath + options[0].name + '.png'">
+      <span>{{options[0].name}}</span>
+      <i class="ph ph-caret-down"></i>
+    </button>
+  </div>
+</div>

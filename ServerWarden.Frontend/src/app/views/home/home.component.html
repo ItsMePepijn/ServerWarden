@@ -1,5 +1,6 @@
 <div class="container">
   <div class="server-list">
+    <button class="new-server" (click)="newServer()"><i class="ph ph-plus"></i>New</button>
     <div class="server" *ngFor="let server of (serverList$ | async)" [routerLink]="['/server', server.id]">
       <img [src]="'assets/games/' + (server.serverType | toString) + '.png'" [alt]="(server.serverType | toString)">
       <p class="title">{{server.name}}</p>

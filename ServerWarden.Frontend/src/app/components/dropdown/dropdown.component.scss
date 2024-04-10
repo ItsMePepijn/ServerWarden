@@ -1,0 +1,75 @@
+@import '../../../vars';
+
+.dropdown, .dropdown-spacer{
+  background-color: $color-background-secondary;
+  border-radius: 8px;
+  width: fit-content;
+  position: absolute;
+  border: 1px solid transparent;
+  
+  &.opened{
+    border: 1px solid $color-text-accent-primary;
+  }
+
+  & .dropdown-header, .dropdown-spacer .dropdown-header{
+    padding: 16px;
+    
+    & button{
+      background-color: $color-background-tertiary;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 6px;
+
+      &:hover{
+        cursor: pointer;
+        background-color: rgba($color: $color-background-tertiary, $alpha: 0.6);
+      }
+
+      & img{
+        max-width: 50px;
+        border-radius: 6px;
+      }
+
+      & i{
+        transition: all 0.4s ease;
+        &.opened{
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  & .dropdown-content{
+    padding: 16px;
+    padding-top: 0;
+
+    & .option{
+      background-color: $color-background-tertiary;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+
+      &:hover{
+        cursor: pointer;
+        background-color: rgba($color: $color-background-tertiary, $alpha: 0.6);
+      }
+
+      & img{
+        max-width: 50px;
+        border-radius: 6px;
+      }
+    }
+  }
+}
+
+.dropdown-spacer{
+  position: relative;
+  opacity: 0;
+  pointer-events: none;
+}

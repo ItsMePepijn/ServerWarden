@@ -1,0 +1,15 @@
+<div class="backdrop" *ngIf="opened" (click)="closeModal()">
+  <div class="content" (click)="$event.stopPropagation()">
+    <h2>New Server</h2>
+    <div class="sub-content" [ngClass]="{'error' : error}">
+      <p class="title">Name</p>
+      <input type="text" [(ngModel)]="serverName" placeholder="Server Name">
+      <p class="title">Game</p>
+      <app-dropdown [options]="serverTypes" imagePath="assets/games/" (selected)="selectedServerType = $event"></app-dropdown>
+      <div class="buttons">
+        <button class="red" (click)="closeModal()">Cancel</button>
+        <button (click)="createServer()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
