@@ -26,17 +26,17 @@ namespace ServerWarden.Api.RouteHandlers
             return result.ToResponse();
         }
 
-        private static async Task<IResult> CreateServer(ServerType type, string serverName, HttpContext context, IAuthService authService, IServerService serverService)
+        private static async Task<IResult> CreateServer(CreateServerDto createServerDto, HttpContext context, IAuthService authService, IServerService serverService)
         {
 			var claims = authService.ParseClaimsFromJwt(context.Request.Headers.Authorization!);
 			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
 
-			if (!Enum.IsDefined(typeof(ServerType), type))
+			if (!Enum.IsDefined(typeof(ServerType), createServerDto.ServerType))
 			{
 				return new ServiceResult<ServerProfileDtoSimple>(ResultCode.InvalidServerType).ToResponse();
 			}
 
-			var result = await serverService.CreateServer(userId, type, serverName);
+			var result = await serverService.CreateServer(userId, createServerDto.ServerType, createServerDto.Name);
 			return result.ToResponse();
 		}
 
