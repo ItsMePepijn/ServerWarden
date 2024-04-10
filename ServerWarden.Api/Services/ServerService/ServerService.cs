@@ -93,7 +93,7 @@ namespace ServerWarden.Api.Services.ServerService
 					Permissions = new([ServerPermissions.SuperUser])
 				};
 
-				var installPath = Path.GetFullPath(Path.Combine(_paths.ServerInstallationsPath, server.Id.ToString(), "install");
+				var installPath = Path.GetFullPath(Path.Combine(_paths.ServerInstallationsPath, server.Id.ToString(), "install"));
 				server.InstallationPath = installPath;
 				server.UserPermissions.Add(serverPermission);
 
