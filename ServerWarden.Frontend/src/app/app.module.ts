@@ -19,6 +19,7 @@ import { ServerComponent } from './views/server/server.component';
 import { ModalService } from './services/modal.service';
 import { NewServerModalComponent } from './components/new-server-modal/new-server-modal.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     NavBarComponent,
     ServerComponent,
     NewServerModalComponent,
-    DropdownComponent
+    DropdownComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

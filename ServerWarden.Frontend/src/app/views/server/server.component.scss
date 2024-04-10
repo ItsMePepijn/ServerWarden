@@ -50,7 +50,6 @@
     & .user-info{
       & .users{
         & .user{
-          width: 100%;
           background-color: $color-background-tertiary;
           padding: 16px;
           border-radius: 8px;
@@ -64,6 +63,14 @@
             color: $color-text-accent-primary;
           }
         }
+      }
+    }
+
+    & .server-info{
+
+      & .content-panel{
+        background-color: $color-background-tertiary;
+        padding: 16px;
       }
     }
   }
