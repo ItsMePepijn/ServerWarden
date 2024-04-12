@@ -24,5 +24,6 @@ export interface ServerProfileSimple{
 export interface ServerProfile extends ServerProfileSimple{
   installationPath: string,
   hasBeenInstalled: boolean,
+  isInstalling: boolean,
   users: ServerUser[],
 }

@@ -1,18 +1,56 @@
-<div class="container">
+<div class="container" *ngIf="(server$ | async) as server">
   <div class="header">
     <button routerLink="/"><i class="ph ph-caret-left"></i>Back</button>
-    <p class="title">{{(server$ | async)?.name}}</p>
+    <p class="title">{{server.name}}</p>
+    <div class="game-banner">
+      <img [src]="'assets/games/' + (server.serverType | toString) + '.png'" [alt]="server.name">
+      <p>{{server.serverType | toString}}</p>
+    </div>
   </div>
 
   <div class="details">
     <div class="server-info">
       <div class="title">Overview</div>
+
+      <!-- Not installed -->
+      <ng-container *ngIf="!server.hasBeenInstalled; else hasBeenInstalled">
+        <div class="content-panel">
+          <div class="info">
+            <p><b>Game:</b> {{server.serverType | toString}}</p>
+            <p *ngIf="!server.isInstalling"><b>Status:</b> Not Installed</p>
+            <p *ngIf="server.isInstalling"><b>Status:</b> Installing</p>
+            <p><b>Install Directory:</b> <span class="code">{{server.installationPath}}</span></p>
+          </div>
+          <div class="buttons">
+            <button *ngIf="!server.isInstalling" (click)="startInstallation()">Install</button>
+          </div>
+        </div>
+
+        <div class="content-panel" *ngIf="server.isInstalling">
+          <app-console [title]="server.name + ' - Installation'" [logLines]="serverLogLines" [ableToInput]="false"></app-console>
+        </div>
+      </ng-container>
+
+      <!-- Installed -->
+      <ng-template #hasBeenInstalled>
+        <div class="content-panel">
+          <p><span>Game:</span> {{server.serverType | toString}}</p>
+          <!-- <p><span>IP:</span> {{server.ip}}</p>
+          <p><span>Port:</span> {{server.port}}</p>
+          <p><span>Players:</span> {{server.players}}/{{server.maxPlayers}}</p>
+          <p><span>Status:</span> {{server.status}}</p> -->
+        </div>
+
+        <!-- <div class="content-panel">
+          <app-console></app-console>
+        </div> -->
+      </ng-template>
     </div>
 
     <div class="user-info">
       <div class="title">Users</div>
       <div class="users">
-        <div class="user" *ngFor="let user of (server$ | async)?.users">
+        <div class="user" *ngFor="let user of server.users">
           <i class="ph ph-user"></i>
           <p>{{user.user.name}}</p>
         </div>

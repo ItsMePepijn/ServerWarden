@@ -60,6 +60,14 @@ button{
   }
 }
 
+.code{
+  background-color: $color-background-secondary;
+  padding: 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  line-height: 25px;
+}
+
 .spinner-container{
   position: fixed;
   top: 0;
@@ -73,6 +81,7 @@ button{
   opacity: 0;
   animation: 600ms fadeIn forwards;
 }
+
 
 @keyframes fadeIn {
   from {

@@ -4,7 +4,7 @@
   padding: 32px;
   padding-top: 16px;
 
-  & .header{
+  & > .header{
     padding: 20px;
     background-color: $color-background-secondary;
     border-radius: 16px;
@@ -15,6 +15,8 @@
     & .title{
       font-size: 1.8rem;
       font-weight: 700;
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
     }
 
     & button{
@@ -39,15 +41,19 @@
       padding: 20px;
       background-color: $color-background-secondary;
       border-radius: 16px;
+      height: fit-content;
     }
 
     & .title{
       font-size: 1.5rem;
       font-weight: 700;
-      margin-bottom: 16px;
     }
 
     & .user-info{
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      
       & .users{
         & .user{
           background-color: $color-background-tertiary;
@@ -67,11 +73,47 @@
     }
 
     & .server-info{
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
 
       & .content-panel{
         background-color: $color-background-tertiary;
         padding: 16px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        & .info{
+          max-width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+
+          & .code{
+            margin-left: 4px;
+          }
+        }
       }
     }
+  }
+}
+
+.game-banner{
+  padding: 8px;
+  border-radius: 8px;
+  background-color: $color-background-tertiary;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  font-weight: bold;
+
+  & img{
+    max-width: 60px;
+    border-radius: 8px;
   }
 }

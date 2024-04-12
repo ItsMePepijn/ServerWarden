@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ServerService } from '../../services/server.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { ServerProfile } from '../../models/server';
+import { BehaviorSubject, Observable, Subscription, catchError, filter, map, of, take } from 'rxjs';
+import { ServerProfile, ServerUser } from '../../models/server';
+import { SignalrHubService } from '../../services/signalr-hub.service';
+import { User } from '../../models/auth';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-server',
@@ -11,12 +14,23 @@ import { ServerProfile } from '../../models/server';
 })
 export class ServerComponent implements OnInit, OnDestroy{
   private paramMapSubscription: Subscription | undefined;
+  private connectionSubscription: Subscription | undefined;
 
+  public user$: Observable<User | null> = this.authService.state$.pipe(
+    filter(state => !!state && state.user !== null),
+    map(state => state ? state.user : null)
+  );
+  
   public server$: BehaviorSubject<ServerProfile | null> = new BehaviorSubject<ServerProfile | null>(null);
+
+  public serverLogLines: string[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private serverService: ServerService
+    private serverService: ServerService,
+    private authService: AuthService,
+    private signalRService: SignalrHubService,
   ) {}
 
   ngOnInit() {
@@ -30,13 +44,71 @@ export class ServerComponent implements OnInit, OnDestroy{
               this.router.navigate(['/']);
               return;
             }
+
+            this.user$.pipe(
+              take(1)
+            ).subscribe((user) => {
+              response.data.users.filter((u: ServerUser) => u.user.id === user?.id).forEach((u: ServerUser) => u.user.name += " (You)");
+            });
+            
             this.server$.next(response.data);
           });
+
+        this.connectionSubscription = this.signalRService.startConnection().pipe(
+          catchError(error => {
+            console.error('Connection failed!', error);
+            return of(undefined);
+          })
+        ).subscribe(() => {
+          this.signalRService.joinServerGroup(id).then(response => {
+            if(!response.success){
+              console.error('Failed to join SignalR server group:', response.message);
+              this.router.navigate(['/']);
+              return;
+            }
+            console.log('Joined SignalR server group ' + id);
+          });
+
+          this.signalRService.onServerInstallLog$.subscribe(log => {
+            console.log(log);
+            this.serverLogLines.push(log);
+          });
+
+          this.signalRService.onServerStartedInstalling$.subscribe(() => {
+            this.serverService.getServerById(this.server$.value?.id || "")
+            .subscribe(response => {
+              if(!response.success){
+                return;
+              }
+              this.server$.next(response.data);
+            });
+
+            console.log('Server started installing');
+            this.serverLogLines = [];
+            this.serverLogLines.push('Server started installing');
+          });
+
+          this.signalRService.onServerFinishedInstalling$.subscribe(() => {
+            this.serverService.getServerById(this.server$.value?.id || "")
+            .subscribe(response => {
+              if(!response.success){
+                return;
+              }
+              this.server$.next(response.data);
+            });
+          });
+        });
       });
   }
 
+  public startInstallation(): void {
+    this.serverService.startInstallation(this.server$.value?.id || "")
+      .subscribe();
+  }
+
   ngOnDestroy() {
-    if (this.paramMapSubscription)
-      this.paramMapSubscription.unsubscribe();
+    this.signalRService.disconnect();
+    this.connectionSubscription?.unsubscribe();
+    this.paramMapSubscription?.unsubscribe();
   }
 }

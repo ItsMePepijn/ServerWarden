@@ -7,6 +7,7 @@
         public ServerType ServerType { get; set; }
         public string InstallationPath { get; set; } = string.Empty;
         public bool HasBeenInstalled { get; set; }
+        public bool IsInstalling { get; set; }
 		public List<ServerPermission> UserPermissions { get; set; } = [];
     }
 }

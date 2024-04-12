@@ -21,6 +21,14 @@
 			set => _dbPath = value;
 		}
 
+		// Hangfire Database
+		private string? _hangfireDbPath;
+		public string HangfireDbPath
+		{
+			get => _hangfireDbPath ??= Path.Combine(BasePath, "hangfire.db");
+			set => _hangfireDbPath = value;
+		}
+
 		// Server installations
 		private string? _serverInstallationsPath;
 		public string ServerInstallationsPath

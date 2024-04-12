@@ -1,0 +1,11 @@
+<div class="console-wrapper">
+  <div class="header">{{title}}</div>
+  <div class="content">
+    <div class="console-output" #consoleWindow>
+      <p *ngFor="let line of logLines">{{line}}</p>
+    </div>
+    <div class="input" *ngIf="ableToInput">
+      <input type="text" [(ngModel)]="input" (keyup.enter)="sendCommand()" placeholder="Enter a command...">
+    </div>
+  </div>
+</div>

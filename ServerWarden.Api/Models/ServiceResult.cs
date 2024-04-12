@@ -30,5 +30,7 @@
 
 		ServerNotFound,
 		InvalidServerType,
+		ServerAlreadyInstalled,
+		ServerIsInstalling,
 	}
 }

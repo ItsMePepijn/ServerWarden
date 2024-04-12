@@ -13,8 +13,9 @@ namespace ServerWarden.Api.RouteHandlers
             builder.MapGet("/", GetServerProfiles);
             builder.MapPost("/", CreateServer);
             builder.MapGet("/{serverId}", GetServerProfileById);
+            builder.MapPatch("/{serverId}/install", InstallServer);
 
-            return builder;
+			return builder;
         }
 
         private static async Task<IResult> GetServerProfiles(HttpContext context, IAuthService authService, IServerService serverService)
@@ -46,6 +47,15 @@ namespace ServerWarden.Api.RouteHandlers
 			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
 
 			var result = await serverService.GetServerProfileById(serverId, userId);
+			return result.ToResponse();
+		}
+
+		private static async Task<IResult> InstallServer(Guid serverId, HttpContext context, IAuthService authService, IServerService serverService)
+		{
+			var claims = authService.ParseClaimsFromJwt(context.Request.Headers.Authorization!);
+			var userId = Guid.Parse(claims.First(claim => claim.Type.Equals("id")).Value);
+
+			var result = await serverService.InstallServer(serverId, userId);
 			return result.ToResponse();
 		}
     }

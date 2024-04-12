@@ -2,6 +2,6 @@
 {
 	public record CreateServerDto(ServerType ServerType, string Name);
 	public record ServerProfileDtoSimple(Guid Id, string Name, ServerType ServerType);
-	public record ServerProfileDto(Guid Id, string Name, ServerType ServerType, string InstallationPath, bool HasBeenInstalled, List<ServerUserDto> Users);
+	public record ServerProfileDto(Guid Id, string Name, ServerType ServerType, string InstallationPath, bool HasBeenInstalled, bool IsInstalling, List<ServerUserDto> Users);
 	public record ServerUserDto(UserDto User, List<ServerPermissions> Permissions);
 }

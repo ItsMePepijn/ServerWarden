@@ -20,6 +20,8 @@ export enum ResultCode
 
   ServerNotFound,
   InvalidServerType,
+  ServerAlreadyInstalled,
+  ServerIsInstalling,
 }
 
 export enum ModalType{

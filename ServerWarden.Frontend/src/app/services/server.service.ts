@@ -43,4 +43,13 @@ export class ServerService {
       })
     );
   }
+
+  public startInstallation(serverId: string): Observable<ApiResponse> {
+    return this.http.patch<ApiResponse>(`/api/servers/${serverId}/install`, {}).pipe(
+      catchError((e) => {
+        console.error(e.error || e);
+        return of(e.error || e);
+      })
+    );
+  }
 }
