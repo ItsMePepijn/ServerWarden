@@ -3,13 +3,18 @@
 	public class Paths
 	{
 		// Configurable paths
-		public string BasePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ServerWarden");
+		private string? _basePath;
+		public string BasePath
+		{
+			get => Path.GetFullPath(_basePath ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ServerWarden"));
+			set => _basePath = value;
+		}
 
 		// SteamCmd
 		private string? _steamCmdPath;
 		public string SteamCmdPath
 		{
-			get => _steamCmdPath ??= Path.Combine(BasePath, "steamcmd");
+			get => Path.GetFullPath(_steamCmdPath ??= Path.Combine(BasePath, "steamcmd"));
 			set => _steamCmdPath = value;
 		}
 
@@ -17,7 +22,7 @@
 		private string? _dbPath;
 		public string DbPath
 		{
-			get => _dbPath ??= Path.Combine(BasePath, "data.db");
+			get => Path.GetFullPath(_dbPath ??= Path.Combine(BasePath, "data.db"));
 			set => _dbPath = value;
 		}
 
@@ -25,7 +30,7 @@
 		private string? _hangfireDbPath;
 		public string HangfireDbPath
 		{
-			get => _hangfireDbPath ??= Path.Combine(BasePath, "hangfire.db");
+			get => Path.GetFullPath(_hangfireDbPath ??= Path.Combine(BasePath, "hangfire.db"));
 			set => _hangfireDbPath = value;
 		}
 
@@ -33,8 +38,16 @@
 		private string? _serverInstallationsPath;
 		public string ServerInstallationsPath
 		{
-			get => _serverInstallationsPath ??= Path.Combine(BasePath, "servers");
+			get => Path.GetFullPath(_serverInstallationsPath ??= Path.Combine(BasePath, "servers"));
 			set => _serverInstallationsPath = value;
+		}
+
+		// Logfiles
+		private string? _logPath;
+		public string LogPath
+		{
+			get => Path.GetFullPath(_logPath ??= Path.Combine(BasePath, "log", "serverwarden.log"));
+			set => _logPath = value;
 		}
 
 		// Non-configurable paths

@@ -109,6 +109,15 @@ builder.Services.AddHangfireServer(options =>
 
 builder.Services.AddAuthorization();
 
+// Log4Net
+var serviceProvider = builder.Services.BuildServiceProvider();
+using var builderScope = serviceProvider.CreateScope();
+var logPath = builderScope.ServiceProvider.GetRequiredService<IOptions<Paths>>().Value;
+
+log4net.GlobalContext.Properties["LogPath"] = logPath.LogPath;
+builder.Logging.AddLog4Net();
+
+
 var app = builder.Build();
 
 // Ensure database is created and up to date
