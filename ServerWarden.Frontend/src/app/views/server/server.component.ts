@@ -37,22 +37,7 @@ export class ServerComponent implements OnInit, OnDestroy{
     this.paramMapSubscription = this.route.paramMap
       .subscribe(paramMap => {
         const id = paramMap.get('id') || "";
-
-        this.serverService.getServerById(id)
-          .subscribe(response => {
-            if(!response.success){
-              this.router.navigate(['/']);
-              return;
-            }
-
-            this.user$.pipe(
-              take(1)
-            ).subscribe((user) => {
-              response.data.users.filter((u: ServerUser) => u.user.id === user?.id).forEach((u: ServerUser) => u.user.name += " (You)");
-            });
-            
-            this.server$.next(response.data);
-          });
+        this.fetchServerData(id);
 
         this.connectionSubscription = this.signalRService.startConnection().pipe(
           catchError(error => {
@@ -60,6 +45,7 @@ export class ServerComponent implements OnInit, OnDestroy{
             return of(undefined);
           })
         ).subscribe(() => {
+          // Join server group
           this.signalRService.joinServerGroup(id).then(response => {
             if(!response.success){
               console.error('Failed to join SignalR server group:', response.message);
@@ -69,33 +55,24 @@ export class ServerComponent implements OnInit, OnDestroy{
             console.log('Joined SignalR server group ' + id);
           });
 
+          // Listen for server logs
           this.signalRService.onServerInstallLog$.subscribe(log => {
             console.log(log);
             this.serverLogLines.push(log);
           });
 
+          // Listen for server installation start
           this.signalRService.onServerStartedInstalling$.subscribe(() => {
-            this.serverService.getServerById(this.server$.value?.id || "")
-            .subscribe(response => {
-              if(!response.success){
-                return;
-              }
-              this.server$.next(response.data);
-            });
+            this.fetchServerData();
 
             console.log('Server started installing');
             this.serverLogLines = [];
             this.serverLogLines.push('Server started installing');
           });
 
+          // Listen for server installation finish
           this.signalRService.onServerFinishedInstalling$.subscribe(() => {
-            this.serverService.getServerById(this.server$.value?.id || "")
-            .subscribe(response => {
-              if(!response.success){
-                return;
-              }
-              this.server$.next(response.data);
-            });
+            this.fetchServerData();
           });
         });
       });
@@ -104,6 +81,24 @@ export class ServerComponent implements OnInit, OnDestroy{
   public startInstallation(): void {
     this.serverService.startInstallation(this.server$.value?.id || "")
       .subscribe();
+  }
+
+  public fetchServerData(id = this.server$.value?.id || ""): void {
+    this.serverService.getServerById(id)
+      .subscribe(response => {
+        if(!response.success){
+          this.router.navigate(['/']);
+          return;
+        }
+
+        this.user$.pipe(
+          take(1)
+        ).subscribe((user) => {
+          response.data.users.filter((u: ServerUser) => u.user.id === user?.id).forEach((u: ServerUser) => u.user.name += " (You)");
+        });
+
+        this.server$.next(response.data);
+      });
   }
 
   ngOnDestroy() {
