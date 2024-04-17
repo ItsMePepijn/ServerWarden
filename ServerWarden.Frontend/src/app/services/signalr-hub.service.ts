@@ -9,9 +9,8 @@ import { ApiResponse } from '../models/common';
 export class SignalrHubService {
   private hubConnection: HubConnection;
 
-  public onServerStartedInstalling$: Observable<void>;
+  public onServerUpdate$: Observable<void>;
   public onServerInstallLog$: Observable<string>;
-  public onServerFinishedInstalling$: Observable<void>;
 
   constructor() {
     this.hubConnection = new HubConnectionBuilder()
@@ -19,8 +18,8 @@ export class SignalrHubService {
       .withAutomaticReconnect()
       .build();
     
-    this.onServerStartedInstalling$ = new Observable<void>((observer) => {
-      this.hubConnection.on('ServerStartedInstalling', () => {
+    this.onServerUpdate$ = new Observable<void>((observer) => {
+      this.hubConnection.on('ServerUpdate', () => {
         observer.next();
       });
     });
@@ -28,12 +27,6 @@ export class SignalrHubService {
     this.onServerInstallLog$ = new Observable<string>((observer) => {
       this.hubConnection.on('ServerInstallLog', (log: string) => {
         observer.next(log);
-      });
-    });
-
-    this.onServerFinishedInstalling$ = new Observable<void>((observer) => {
-      this.hubConnection.on('ServerFinishedInstalling', () => {
-        observer.next();
       });
     });
   }

@@ -136,7 +136,8 @@ namespace ServerWarden.Api.Services.ServerService
 				server.IsInstalling = true;
 				await _dataContext.SaveChangesAsync();
 
-				_serverHub.ServerStartedInstalling(serverId);
+				_serverHub.ServerUpdated(serverId);
+				_serverHub.ServerInstallLog(serverId, "Server started installing");
 
 				switch (server.ServerType)
 				{
@@ -168,7 +169,7 @@ namespace ServerWarden.Api.Services.ServerService
 			server.HasBeenInstalled = true;
 			await _dataContext.SaveChangesAsync();
 
-			_serverHub.ServerFinishedInstalling(serverId);
+			_serverHub.ServerUpdated(serverId);
 		}
 
 		//Background tasks

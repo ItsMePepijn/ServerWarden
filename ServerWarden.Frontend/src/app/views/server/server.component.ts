@@ -61,18 +61,10 @@ export class ServerComponent implements OnInit, OnDestroy{
             this.serverLogLines.push(log);
           });
 
-          // Listen for server installation start
-          this.signalRService.onServerStartedInstalling$.subscribe(() => {
+          // Listen for server update
+          this.signalRService.onServerUpdate$.subscribe(() => {
             this.fetchServerData();
-
-            console.log('Server started installing');
             this.serverLogLines = [];
-            this.serverLogLines.push('Server started installing');
-          });
-
-          // Listen for server installation finish
-          this.signalRService.onServerFinishedInstalling$.subscribe(() => {
-            this.fetchServerData();
           });
         });
       });

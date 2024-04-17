@@ -36,19 +36,14 @@ namespace ServerWarden.Api.Hubs
     {
         private readonly IHubContext<ServerHub> _serverHub = serverHub;
 
-		public void ServerStartedInstalling(Guid serverId)
+		public void ServerUpdated(Guid serverId)
 		{
-			_serverHub.Clients.Group(serverId.ToString()).SendAsync("ServerStartedInstalling");
+			_serverHub.Clients.Group(serverId.ToString()).SendAsync("ServerUpdate");
 		}
 
-		public void ServerFinishedInstalling(Guid serverId)
+		public void ServerInstallLog(Guid serverId, string log)
 		{
-			_serverHub.Clients.Group(serverId.ToString()).SendAsync("ServerFinishedInstalling");
-		}
-
-		public Task ServerInstallLog(Guid serverId, string log)
-		{
-			return _serverHub.Clients.Group(serverId.ToString()).SendAsync("ServerInstallLog", log);
+			_serverHub.Clients.Group(serverId.ToString()).SendAsync("ServerInstallLog", log);
 		}
 	}
 }
