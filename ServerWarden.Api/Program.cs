@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ServerWarden.Api;
 using ServerWarden.Api.Hubs;
+using ServerWarden.Api.Middleware;
 using ServerWarden.Api.RouteHandlers;
 using ServerWarden.Api.Services.AuthService;
 using ServerWarden.Api.Services.ServerService;
@@ -134,6 +135,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseUserIdProvider();
 
 // Routes
 app.MapGroup("/auth")
