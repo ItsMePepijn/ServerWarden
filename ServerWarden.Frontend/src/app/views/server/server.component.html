@@ -17,16 +17,16 @@
         <div class="content-panel">
           <div class="info">
             <p><b>Game:</b> {{server.serverType | toString}}</p>
-            <p *ngIf="!server.isInstalling"><b>Status:</b> Not Installed</p>
-            <p *ngIf="server.isInstalling"><b>Status:</b> Installing</p>
+            <p *ngIf="!server.shouldBeInstalling"><b>Status:</b> Not Installed</p>
+            <p *ngIf="server.shouldBeInstalling"><b>Status:</b> Installing</p>
             <p><b>Install Directory:</b> <span class="code">{{server.installationPath}}</span></p>
           </div>
           <div class="buttons">
-            <button *ngIf="!server.isInstalling" (click)="startInstallation()">Install</button>
+            <button *ngIf="!server.shouldBeInstalling" (click)="startInstallation()">Install</button>
           </div>
         </div>
 
-        <div class="content-panel" *ngIf="server.isInstalling">
+        <div class="content-panel" *ngIf="server.shouldBeInstalling">
           <app-console [title]="server.name + ' - Installation'" [logLines]="serverLogLines" [ableToInput]="false"></app-console>
         </div>
       </ng-container>

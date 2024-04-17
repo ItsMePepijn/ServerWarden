@@ -22,6 +22,7 @@ export enum ResultCode
   InvalidServerType,
   ServerAlreadyInstalled,
   ServerIsInstalling,
+  ServerNotInstalled,
 }
 
 export enum ModalType{

@@ -1,13 +1,13 @@
 ﻿using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using ServerWarden.Api.Hubs;
 using ServerWarden.Api.Models;
 using ServerWarden.Api.Models.Database;
 using ServerWarden.Api.Models.Dto;
 using ServerWarden.Api.Settings;
 using SteamCMD.ConPTY;
+using System.Diagnostics;
 
 namespace ServerWarden.Api.Services.ServerService
 {
@@ -60,7 +60,7 @@ namespace ServerWarden.Api.Services.ServerService
 						server.ServerType,
 						server.InstallationPath,
 						server.HasBeenInstalled,
-						server.IsInstalling,
+						server.ShouldBeInstalling,
 						server.UserPermissions
 							.Where(x => x.User is not null)
 							.Select(x => new ServerUserDto(
@@ -128,12 +128,12 @@ namespace ServerWarden.Api.Services.ServerService
 				return new(ResultCode.UserNotAuthorized);
 			if (server.HasBeenInstalled)
 				return new(ResultCode.ServerAlreadyInstalled);
-			if (server.IsInstalling)
+			if (server.ShouldBeInstalling)
 				return new(ResultCode.ServerIsInstalling);
 
 			try
 			{
-				server.IsInstalling = true;
+				server.ShouldBeInstalling = true;
 				await _dataContext.SaveChangesAsync();
 
 				_serverHub.ServerUpdated(serverId);
@@ -157,6 +157,67 @@ namespace ServerWarden.Api.Services.ServerService
 			}
 		}
 
+		public async Task<ServiceResult> StartServer(Guid serverId, Guid userId)
+		{
+			var server = await _dataContext.Servers
+				.Include(x => x.UserPermissions)
+				.FirstOrDefaultAsync(x => x.Id == serverId);
+
+			if (server == null)
+				return new(ResultCode.ServerNotFound);
+			if (!UserHasPermission(server, userId, ServerPermissions.Start))
+				return new(ResultCode.UserNotAuthorized);
+			if (!server.HasBeenInstalled)
+				return new(ResultCode.ServerNotInstalled);
+
+			try
+			{
+				server.ShouldBeRunning = true;
+				await _dataContext.SaveChangesAsync();
+
+				_serverHub.ServerUpdated(serverId);
+
+				return StartServerInternal(server);
+			}
+			catch (Exception e)
+			{
+				_logger.LogError(e, "Failed to start server");
+				return new(ResultCode.Failure);
+			}
+		}
+
+		public async Task StartServer(Guid serverId)
+		{
+			var server = await _dataContext.Servers
+				.FirstOrDefaultAsync(x => x.Id == serverId) ?? throw new Exception("Server not found");
+			if (!server.HasBeenInstalled)
+				throw new Exception("Server not installed");
+
+			var result = StartServerInternal(server);
+
+			if (!result.Success)
+				throw new Exception(result.Code.ToString());
+		}
+
+		private static ServiceResult StartServerInternal(ServerProfile server)
+		{
+			switch (server.ServerType)
+			{
+				case ServerType.ArkSurvivalEvolved:
+					Process.Start(Path.Combine(server.InstallationPath, "ShooterGame", "Binaries", "Win64", "ShooterGameServer.exe"));
+					break;
+				default:
+					return new(ResultCode.InvalidServerType);
+			}
+
+			return new(ResultCode.Success);
+		}
+
+		private static bool UserHasPermission(ServerProfile server, Guid userId, params ServerPermissions[] permissions)
+		{
+			return server.UserPermissions.Any(x => x.UserId == userId && (x.Permissions.Contains(ServerPermissions.SuperUser) || permissions.Any(p => x.Permissions.Contains(p))));
+		}
+
 		public async Task ServerFinishedInstalling(Guid serverId)
 		{
 			var server = await _dataContext.Servers
@@ -165,7 +226,7 @@ namespace ServerWarden.Api.Services.ServerService
 			if (server == null)
 				return;
 
-			server.IsInstalling = false;
+			server.ShouldBeInstalling = false;
 			server.HasBeenInstalled = true;
 			await _dataContext.SaveChangesAsync();
 

@@ -25,6 +25,7 @@ namespace ServerWarden.Api.Extensions
                 or ResultCode.UserNotAuthorized 
                 or ResultCode.ServerAlreadyInstalled
                 or ResultCode.ServerIsInstalling
+                or ResultCode.ServerNotInstalled
 				    => TypedResults.BadRequest(result),
                 _ => new InternalServerErrorObjectResult<ServiceResult<T>>(result)
             };
@@ -50,6 +51,7 @@ namespace ServerWarden.Api.Extensions
 				or ResultCode.UserNotAuthorized
 				or ResultCode.ServerAlreadyInstalled
 				or ResultCode.ServerIsInstalling
+                or ResultCode.ServerNotInstalled
 					=> TypedResults.BadRequest(result),
                 _ => new InternalServerErrorObjectResult<ServiceResult>(result)
             };

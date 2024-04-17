@@ -32,5 +32,6 @@
 		InvalidServerType,
 		ServerAlreadyInstalled,
 		ServerIsInstalling,
+		ServerNotInstalled,
 	}
 }

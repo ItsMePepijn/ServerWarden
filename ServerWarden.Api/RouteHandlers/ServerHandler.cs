@@ -14,6 +14,7 @@ namespace ServerWarden.Api.RouteHandlers
             builder.MapPost("/", CreateServer);
             builder.MapGet("/{serverId}", GetServerProfileById);
             builder.MapPatch("/{serverId}/install", InstallServer);
+            builder.MapPatch("/{serverId}/start", StartServer);
 
 			return builder;
         }
@@ -52,6 +53,14 @@ namespace ServerWarden.Api.RouteHandlers
 			var userId = (Guid?)context.Items["UserId"] ?? Guid.Empty;
 
 			var result = await serverService.InstallServer(serverId, userId);
+			return result.ToResponse();
+		}
+
+		private static async Task<IResult> StartServer(Guid serverId, HttpContext context, IServerService serverService)
+		{
+			var userId = (Guid?)context.Items["UserId"] ?? Guid.Empty;
+
+			var result = await serverService.StartServer(serverId, userId);
 			return result.ToResponse();
 		}
     }
